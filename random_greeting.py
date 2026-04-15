@@ -9,7 +9,8 @@ def get_random_greeting():
         "ごきげんよう！",
         "Hello! How are you doing today?",
         "おっす！",
-        "まいど！"
+        "まいど！",
+        "GitHub CLI から追加した新しい挨拶です！"
     ]
     return random.choice(greetings)
 
