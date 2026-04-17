@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zonal OCR System - 伝票自動転記</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">Zonal<span>OCR</span></div>
+            <p class="subtitle">伝票自動転記システム</p>
+        </header>
+        
+        <main class="main-content">
+            <div class="panel left-panel">
+                <div class="upload-section">
+                    <label for="file-upload" class="upload-btn">
+                        <span>📤 PDF・画像をアップロード</span>
+                    </label>
+                    <input id="file-upload" type="file" accept=".pdf,image/*">
+                </div>
+                
+                <div class="canvas-container" id="canvas-wrapper">
+                    <p class="placeholder-text">画像をアップロードして抽出を希望する箇所をドラッグで囲んでください</p>
+                    <img id="document-img" src="" alt="document" style="display: none;">
+                    <canvas id="doc-canvas" data-natural-width="0" data-natural-height="0"></canvas>
+                </div>
+            </div>
+
+            <div class="panel right-panel">
+                <h2>OCR 抽出設定</h2>
+                
+                <div class="current-region-settings" id="current-region-settings" style="display:none;">
+                    <input type="text" id="region-tag" placeholder="項目名を入力（例：担当者）" class="input-tag">
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                        <button id="add-region-btn" class="btn primary" style="flex:1">枠を確定</button>
+                        <button id="cancel-region-btn" class="btn secondary" style="flex:1">キャンセル</button>
+                    </div>
+                </div>
+                
+                <div class="regions-list" id="regions-list">
+                    <!-- Added regions will appear here -->
+                </div>
+
+                <div class="action-section">
+                    <button id="run-ocr-btn" class="btn action primary" disabled>✨ OCR 抽出を実行</button>
+                </div>
+                
+                <div class="results-section" id="results-section" style="display:none;">
+                    <h3 style="margin-top: 1.5rem;">抽出結果（編集可能）</h3>
+                    <div id="ocr-results" class="ocr-results"></div>
+                    <button id="download-excel-btn" class="btn action success">📥 Excelでダウンロード</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/app.js"></script>
+</body>
+</html>
