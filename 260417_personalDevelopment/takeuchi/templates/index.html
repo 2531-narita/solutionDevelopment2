@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF抽出ツール</title>
+</head>
+<body>
+    <h1>PDFアップロード</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit">アップロード</button>
+    </form>
+
+    <h2>ファイル一覧</h2>
+    <form action="/process" method="post">
+        {% for f in files %}
+            <input type="checkbox" name="files" value="{{f}}"> {{f}}<br>
+        {% endfor %}
+        <button type="submit">処理開始</button>
+    </form>
+</body>
+</html>
