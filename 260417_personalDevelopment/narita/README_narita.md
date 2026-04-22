@@ -91,26 +91,131 @@
 - samples/formats: フォーマット登録用サンプル
 - samples/recognition: 認識テスト用サンプル
 
-## 8. 起動方法
+## 8. 環境構築（初回セットアップ）
+### 8.1 前提条件
+- Python 3.10以上
+- Windows環境を想定
+- Tesseract-OCRがインストール可能であること
+
+### 8.2 Python仮想環境の作成
+narita フォルダで以下を実行します。移動コマンド↓
+```bash
+cd ./solutionDevelopment2/260417_personalDevelopment/narita
+
+# Windows: PowerShellまたはコマンドプロンプト
+python -m venv .venv
+```
+
+### 8.3 仮想環境のアクティベーション
+
+#### Windows (PowerShell)
+```bash
+.\.venv\Scripts\Activate.ps1
+```
+
+#### Windows (コマンドプロンプト)
+```bash
+.venv\Scripts\activate.bat
+```
+
+#### Linux/Mac
+```bash
+source .venv/bin/activate
+```
+
+### 8.4 ライブラリのインストール
+仮想環境をアクティベーション後、以下を実行します。
+
+```bash
+pip install -r requirements.txt
+```
+
+主要ライブラリ:
+- streamlit: UIフレームワーク
+- pdfplumber: PDF処理
+- opencv-python: 枠線検出
+- pytesseract: OCRエンジン
+- openpyxl: Excel出力
+
+### 8.5 Tesseract-OCRのインストール（重要）
+pytesseractはTesseract-OCRとセットで動作します。別途インストールが必要です。
+
+#### Windows
+1. 以下からインストーラをダウンロード
+   https://github.com/UB-Mannheim/tesseract/wiki
+   
+    tesseract-ocr-w64-setup-5.5.0.20241111.exe (64 bit)をダウンロード
+
+2. インストーラ実行（デフォルト: C:\Program Files\Tesseract-OCR）
+
+3. Pythonから使用可能にするため、以下を app/main.py に追加（またはセットアップ時に確認）
+   ```python
+   import pytesseract
+   pytesseract.pytesseract.pytesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+   ```
+   
+   既に実装済み場合は不要です。
+
+#### Linux (Ubuntu/Debian)
+```bash
+sudo apt-get install tesseract-ocr
+```
+
+#### Mac
+```bash
+brew install tesseract
+```
+
+### 8.6 セットアップ確認
+以下のコマンドで正常にセットアップできたか確認します。
+
+```bash
+# Pythonライブラリの確認
+pip list
+
+# Tesseractの確認
+tesseract --version
+```
+
+## 9. 起動方法
 1. narita フォルダへ移動
-2. 仮想環境のPythonで起動
+2. 仮想環境をアクティベーション（上記 8.3 を参照）
+3. 以下のコマンドで起動
 
-Windowsの例:
+```bash
+.venv\Scripts\activate.bat
+python -m streamlit run app/main.py
+```
 
-./.venv/Scripts/python.exe -m streamlit run app/main.py
+または PowerShell の場合：
 
-## 9. テスト実行
+```bash
+.\.venv\Scripts\Activate.ps1
+python -m streamlit run app/main.py
+```
+
+4. ブラウザが自動で起動し、`http://localhost:8501` にアクセスします
+
+### トラブル時の確認
+- ポート 8501 が既に使用中の場合
+  ```bash
+  streamlit run app/main.py --server.port 8502
+  ```
+
+## 10. テスト実行
 次のコマンドで単体テストを実行できます。
 
-./.venv/Scripts/python.exe -m unittest discover -s tests
+```bash
+python -m unittest discover -s tests
+```
 
-## 10. 現在の課題
+## 11. 現在の課題
 - OCR精度の改善
 - 実データでのしきい値最適化
 - 結合テストと異常系テストの拡充
 - ログ整備 (処理時間、失敗原因、抽出成功率)
 
-## 11. 運用メモ
+## 12. 運用メモ
 - フォーマット定義は data/formats.json に保存される
 - 定義破損時に備えて定期バックアップを推奨
 - フォーマット追加後は、同一帳票の複数サンプルで判別確認を行う
